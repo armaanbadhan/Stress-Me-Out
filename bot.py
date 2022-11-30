@@ -1,29 +1,16 @@
-import discord
-
+import interactions
 
 with open("token.txt", 'r') as fi:
-    TOKEN = fi.read()
+    TOKEN = fi.read().strip()
 
+bot = interactions.Client(token=TOKEN)
 
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print('Logged on as', self.user)
+@bot.command(
+    name="stress-me-out",
+    description="Shows you the upcoming deadlines",
+    scope=1039826459503644704,
+)
+async def StressMeOut(ctx: interactions.CommandContext):
+    await ctx.send("Hi there!")
 
-    async def on_message(self, message):
-        # don't respond to ourselves
-        if message.author == self.user:
-            return
-
-        if message.content == '$show':
-            await message.channel.send('Deadlines: \nplaceholder 1\nplaceholder 2')
-        
-        if message.content == '$add':
-            await message.channel.send('deadline added')
-
-        if message.content == '$remove':
-            await message.channel.send('removed deadline')
-
-intents = discord.Intents.default()
-intents.message_content = True
-client = MyClient(intents=intents)
-client.run(TOKEN)
+bot.start()
