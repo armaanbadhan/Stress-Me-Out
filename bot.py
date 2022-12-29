@@ -40,6 +40,7 @@ async def StressMeOut(ctx: interactions.CommandContext):
     deadlines = cursor.execute(fetch_script)
     embeded = interactions.Embed(color=0x7289DA)
     added = False
+    deadlines = list(deadlines)
     for i in deadlines:
         rec = change_timeformat(i[1])
         embeded.add_field(
@@ -85,6 +86,9 @@ async def StressMeOut(ctx: interactions.CommandContext):
     ],
 )
 async def add(ctx: interactions.CommandContext, name: str, date: str, month: str, time: str):
+    if ctx.author.id != 786851962833862676:
+        await ctx.send("youre not authorized")
+        return
     time_thing = f"{date}-{month}-2022-{time}"
     insert_script = f"INSERT INTO deadlines VALUES ('{name}', '{time_thing}')"
     cursor.execute(insert_script)
@@ -105,7 +109,9 @@ async def remind(ctx: interactions.CommandContext):
     deadlines = list(deadlines)
     neww = []
     for i in deadlines:
-        neww.append((i[0], int(change_timeformat(i[1]).timestamp())))
+        x = int(change_timeformat(i[1]).timestamp())
+        if x>0:
+            neww.append((i[0], x))
     print(neww[0][1] - int(datetime.datetime.now().timestamp()))
     await sleep(neww[0][1] - int(datetime.datetime.now().timestamp()))
     await ctx.author.send(str(neww[0][0]) + "starting now")
