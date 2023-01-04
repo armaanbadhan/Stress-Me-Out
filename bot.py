@@ -2,11 +2,7 @@ import interactions
 from asyncio import sleep
 import sqlite3
 import datetime
-
-TEST_SERVER_ID = 1039826459503644704
-
-with open("token.txt", 'r') as fi:
-    TOKEN = fi.read().strip()
+from config import TOKEN, TEST_SERVER_ID
 
 bot = interactions.Client(token=TOKEN)
 
@@ -93,29 +89,6 @@ async def add(ctx: interactions.CommandContext, name: str, date: str, month: str
     insert_script = f"INSERT INTO deadlines VALUES ('{name}', '{time_thing}')"
     cursor.execute(insert_script)
     await ctx.send("Deadline added")
-
-
-@bot.command(
-    name="remind",
-    description="reminds you stuff",
-    scope=TEST_SERVER_ID,
-)
-async def remind(ctx: interactions.CommandContext):
-    await ctx.send("Reminders Turned on", ephemeral=True)
-    await ctx.author.send("Reminders set!")
-    
-    fetch_script = "SELECT * FROM deadlines"
-    deadlines = cursor.execute(fetch_script)
-    deadlines = list(deadlines)
-    neww = []
-    for i in deadlines:
-        x = int(change_timeformat(i[1]).timestamp())
-        if x>0:
-            neww.append((i[0], x))
-    print(neww[0][1] - int(datetime.datetime.now().timestamp()))
-    await sleep(neww[0][1] - int(datetime.datetime.now().timestamp()))
-    await ctx.author.send(str(neww[0][0]) + "starting now")
-
 
 
 bot.start()
