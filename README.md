@@ -12,7 +12,7 @@ A discord bot which helps in maintaining assignment deadlines and upcoming quizz
 
 3. Go to `Bot` -> `Add Bot`, Enable `PRESENCE INTENT`, `SERVER MEMBERS INTENT` and `MESSAGE CONTENT INTENT`.
 
-4. Click on reset token to generate a new token, and then click copy. Paste this in your project's .env file. We have successully created a bot, now we add it to our server.
+4. Click on reset token to generate a new token, and then click copy. Paste this in your project's config file. We have successully created a bot, now we add it to our server.
 
 5. To add the bot to our server we will generate a link. Go to `OAuth2` -> `URL Generator`. In Scope add `BOT` and `applications.commands`. and in `BOT PREMISSIONS` give the perms: `Manage Roles, Read Messages/View Channels, Send Messages`. Then copy the generated url and paste it in a new tab. Add to any server you want (preferably create a new server just to test out the bot). You can always come back to this page and grant new permissions to your bot and add it again.
 
@@ -40,7 +40,7 @@ To contribute, fork this repository to your own github account.
 ```
 
 ##### 5. Update the config.py file 
-Add your token and the server id of the server you added your bot to. To get the server ID right click on the server -> Copy ID. if the copy id option is not visible, turn on developer options in discord settings. MAKE SURE TOKEN IS NEVER SHARED.
+Create a config.py file from config.py.example, Add your token and the server id of the server you added your bot to. To get the server ID right click on the server -> Copy ID. if the copy id option is not visible, turn on developer options in discord settings. MAKE SURE TOKEN IS NEVER SHARED.
 
 ##### 6. Run script
 ```bash
