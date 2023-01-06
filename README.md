@@ -18,6 +18,8 @@ A discord bot which helps in maintaining assignment deadlines and upcoming quizz
 
 Now a bot is created and added to the server.
 
+[You can also refer to these docs](https://docs.nextcord.dev/en/stable/discord.html)
+
 
 ## Contribute
 
@@ -46,3 +48,5 @@ Create a config.py file from config.py.example, Add your token and the server id
 ```bash
     python bot.py
 ```
+
+### This Project uses [nextcord](https://github.com/nextcord/nextcord), docs can be found [here](https://docs.nextcord.dev/en/stable/)
