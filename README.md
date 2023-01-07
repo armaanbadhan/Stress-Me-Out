@@ -49,4 +49,4 @@ Create a config.py file from config.py.example, Add your token and the server id
     python bot.py
 ```
 
-### This Project uses [nextcord](https://github.com/nextcord/nextcord), docs can be found [here](https://docs.nextcord.dev/en/stable/)
+### This Project uses [nextcord](https://github.com/nextcord/nextcord), docs can be found [here](https://docs.nextcord.dev/en/stable/).
