@@ -5,7 +5,6 @@ import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
-# the prefix is not used in this example
 bot = commands.Bot(intents=nextcord.Intents.all())
 
 
@@ -19,15 +18,5 @@ async def ping(interaction: Interaction):
     await interaction.response.send_message("pong")
 
 
-# initial_extensions = []
-
-# for filename in os.listdir('./cogs'):
-#     if filename.endswith('.py'):
-#         initial_extensions.append('cogs.' + filename[:-3])
-
-
-
-# for extension in initial_extensions:
-#     bot.load_extension(extension)
 
 bot.run(TOKEN)

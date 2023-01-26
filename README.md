@@ -37,6 +37,7 @@ To contribute, fork this repository to your own github account.
 ```
 
 ##### 4. Install dependencies
+It is recommended to create a virtual environment.
 ```bash
     pip install -r requirements.txt
 ```
