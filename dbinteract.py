@@ -10,7 +10,7 @@ def create_deadlines_table():
     CREATE TABLE IF NOT EXISTS deadlines (
         guild_id    INT,
         name        TEXT,
-        deadline    TEXT
+        deadline    INT
     )
     """
     cur.execute(create_script)
