@@ -28,6 +28,7 @@ def read_deadline(guild_id):
     """
     takes in guild_id, returns a list of tuples where tuple[0] is name and tuple[1] is the deadline
     """
+    
     fetch_script = f"SELECT name, deadline FROM deadlines WHERE guild_id={guild_id}"
 
     cur.execute(fetch_script)
@@ -44,6 +45,13 @@ def delete_all_data():
     cur.execute(fetch_script)
 
 
+def StressMeOut():
+    Embed(title = "hello" , description = " tells nothing")
+    
+    
+    
+    
+    
 
 # if __name__ == "__main__":
 #     create_deadlines_table()
