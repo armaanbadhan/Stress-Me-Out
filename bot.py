@@ -6,7 +6,6 @@ from nextcord import Interaction
 from nextcord.ext import commands
 
 import datetime
-import random
 import dbinteract
 
 

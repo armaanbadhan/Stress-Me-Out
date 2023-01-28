@@ -44,15 +44,6 @@ def delete_all_data():
     fetch_script = "DELETE FROM deadlines"
     cur.execute(fetch_script)
 
-
-def StressMeOut():
-    Embed(title = "hello" , description = " tells nothing")
-    
-    
-    
-    
-    
-
 # if __name__ == "__main__":
 #     create_deadlines_table()
 #     insert_deadline(123, "yo", "t1")
