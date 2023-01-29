@@ -15,6 +15,12 @@ bot = commands.Bot(intents=nextcord.Intents.all())
 @bot.event
 async def on_ready():
     print("bot ready.")
+    
+@bot.event
+async def on_member_join(member):
+    role = discord.utils.get(member.server.roles, name = 'StressedOut')
+    await.client.add_roles(member, role)
+                             
 
 
 @bot.slash_command(name="ping", description="asdf", guild_ids=[TEST_SERVER_ID])
