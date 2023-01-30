@@ -59,3 +59,4 @@ def delete_all_data():
 #     delete_all_data()
 #     print(read_deadline(123))
 
+create_deadlines_table()

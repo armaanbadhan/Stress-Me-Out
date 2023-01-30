@@ -26,34 +26,34 @@ async def ping(interaction: Interaction):
 async def stressmeout(interaction: Interaction):
     embed = nextcord.Embed(title = "Reminders" , description = "Current reminders of this server" , timestamp = datetime.datetime.utcnow())
     
-    embed.set_author(name = "Request by " + interaction.user.name)
-    embed.set_footer(text="Made by Armaan" , icon_url= "https://th.bing.com/th/id/OIP.-dFvAYTcGIX85iRztBlAzAAAAA?pid=ImgDet&w=474&h=474&rs=1")
-
-    
-    #create deadlines table and add a dummy deadline
-    dbinteract.create_deadlines_table()
-    dbinteract.insert_deadline(TEST_SERVER_ID,"TASK", 24082023)
+    #add a dummy deadlines
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", 24082023)
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK2", 24082023)
     
     #deadlines is a list of tuples
     deadlines = dbinteract.read_deadline(TEST_SERVER_ID)
     
     
-    """send the remninder in the form as an discord embed:
-    NAME ---> DATE
-    NAME ---> DATE """
+    """
+    send the remninder in the form as an discord embed:
+    NAME
+        DATE
+    NAME
+        DATE 
+    """
         
     for idx in range(len(deadlines)):
         embed.add_field(
-                name= str(deadlines[idx][0])+ "  " + str(deadlines[idx][1]),
-                value = "",
-                inline = False 
-                )
+                name= str(deadlines[idx][0]),
+                value = str(deadlines[idx][1]),
+                inline = False
+        )
         
-    #remove the dummy table
+    #remove the dummy data
     dbinteract.delete_all_data()
     
     #send the embed
-    await interaction.send(embed = embed)
+    await interaction.send(embeds=[embed])
 
 
     
