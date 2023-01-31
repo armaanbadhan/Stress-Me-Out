@@ -15,6 +15,11 @@ bot = commands.Bot(intents=nextcord.Intents.all())
 @bot.event
 async def on_ready():
     print("bot ready.")
+    
+@bot.event
+async def on_guild_join(guild):
+    new_role = await guild.create_role(name = 'StressedOut')
+                             
 
 
 @bot.slash_command(name="ping", description="asdf", guild_ids=[TEST_SERVER_ID])
