@@ -1,4 +1,3 @@
-import os
 from config import TOKEN, TEST_SERVER_ID
 
 import nextcord
@@ -15,14 +14,14 @@ bot = commands.Bot(intents=nextcord.Intents.all())
 @bot.event
 async def on_ready():
     print("bot ready.")
-    
+
+
 @bot.event
 async def on_guild_join(guild):
-    new_role = await guild.create_role(name = 'StressedOut')
-                             
+    await guild.create_role(name='StressedOut')
 
 
-@bot.slash_command(name="ping", description="asdf", guild_ids=[TEST_SERVER_ID])
+@bot.slash_command(name="ping", description="example slash command", guild_ids=[TEST_SERVER_ID])
 async def ping(interaction: Interaction):
     await interaction.response.send_message("pong")
 
@@ -32,8 +31,8 @@ async def stressmeout(interaction: Interaction):
     embed = nextcord.Embed(title = "Reminders" , description = "Current reminders of this server" , timestamp = datetime.datetime.utcnow())
     
     #add a dummy deadlines
-    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", 24082023)
-    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK2", 24082023)
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", 1675904628)
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK2", 1675904628)
     
     #deadlines is a list of tuples
     deadlines = dbinteract.read_deadline(TEST_SERVER_ID)
@@ -55,7 +54,7 @@ async def stressmeout(interaction: Interaction):
         )
         
     #remove the dummy data
-    dbinteract.delete_all_data()
+    dbinteract.delete_deadline(TEST_SERVER_ID)
     
     #send the embed
     await interaction.send(embeds=[embed])
