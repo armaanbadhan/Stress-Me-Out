@@ -5,6 +5,7 @@ import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
+import time
 import datetime
 import dbinteract
 
@@ -60,6 +61,24 @@ async def stressmeout(interaction: Interaction):
     #send the embed
     await interaction.send(embed = embed)
 
+    def add_slash_command(name, date, hours, minutes):
+    try:
+        # Check if the date is in a valid format
+        datetime_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
+
+        # Add hours and minutes to the datetime object
+        datetime_obj = datetime_obj + datetime.timedelta(hours=int(hours), minutes=int(minutes))
+
+        # Convert the datetime object to unix timestamp
+        unix_timestamp = int(datetime_obj.timestamp())
+
+        # Add the data to the database
+        # Code to add data to the database
+
+        # Send a confirmation message
+        return "Data added successfully with name '{}', date '{} {}:{}' and unix timestamp '{}'".format(name, date, hours, minutes, unix_timestamp)
+    except ValueError:
+        return "Error: Invalid date format. Use YYYY-MM-DD"
 
     
 
