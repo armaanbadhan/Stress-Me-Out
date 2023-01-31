@@ -6,6 +6,7 @@ from nextcord.ext import commands
 
 import time
 import datetime
+from datetime import datetime, timedelta
 import dbinteract
 
 
@@ -60,25 +61,21 @@ async def stressmeout(interaction: Interaction):
     #send the embed
     await interaction.send(embeds=[embed])
 
-    def add_slash_command(name, date, hours, minutes):
-    try:
-        # Check if the date is in a valid format
-        datetime_obj = datetime.datetime.strptime(date, '%Y-%m-%d')
-
-        # Add hours and minutes to the datetime object
-        datetime_obj = datetime_obj + datetime.timedelta(hours=int(hours), minutes=int(minutes))
-
-        # Convert the datetime object to unix timestamp
-        unix_timestamp = int(datetime_obj.timestamp())
-
-        # Add the data to the database
-        # Code to add data to the database
-
-        # Send a confirmation message
-        return "Data added successfully with name '{}', date '{} {}:{}' and unix timestamp '{}'".format(name, date, hours, minutes, unix_timestamp)
-    except ValueError:
-        return "Error: Invalid date format. Use YYYY-MM-DD"
-
-    
+@bot.event
+async def on_message(message):
+    if message.content == '/contests':
+        # make API request to kontests.net/api
+        response = requests.get("https://kontests.net/api/v1/contests")
+        contests = json.loads(response.text)
+        
+        # filter contests to only show running and upcoming in next 24 hours
+        now = datetime.now()
+        upcoming_contests = [c for c in contests if (datetime.strptime(c["start"], '%Y-%m-%dT%H:%M:%SZ') - now).days < 1]
+        
+        # format contest information
+        contest_list = "\n".join([f"{c['name']} ({c['start']} - {c['end']})" for c in upcoming_contests])
+        
+        # send contest information as response to discord
+        await message.channel.send(f"Upcoming contests in next 24 hours:\n{contest_list}")
 
 bot.run(TOKEN)
