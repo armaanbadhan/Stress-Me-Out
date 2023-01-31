@@ -44,19 +44,47 @@ def delete_all_data():
     fetch_script = "DELETE FROM deadlines"
     cur.execute(fetch_script)
 
-# if __name__ == "__main__":
+def delete_deadline(guild_id):
+    """
+    deletes deadlines corresponding to guild_id
+    """
+
+    fetch_script = f"DELETE FROM deadlines where guild_id = {guild_id}"
+
+    cur.execute(fetch_script)
+    conn.commit()
+
+def create_timezonediff_table():
+    """
+    creates a timezone table which contains timezone difference
+    """
+
+
+    create_script = """
+    CREATE TABLE IF NOT EXISTS timezone (
+        guild_id    INT,
+        timezone    INT
+    )
+    """
+    cur.execute(create_script)
+    conn.commit()
+
+#if __name__ == "__main__":
 #     create_deadlines_table()
 #     insert_deadline(123, "yo", "t1")
 #     insert_deadline(123, "y2", "t2")
 #     insert_deadline(124, "y2", "t2")
 #     print(read_deadline(123))
-#     delete_all_data()
+#     delete_deadline(123)
 #     print(read_deadline(123))
+#     print(read_deadline(124))
 #     insert_deadline(123, "yo", "t1")
 #     insert_deadline(123, "y2", "t2")
 #     insert_deadline(124, "y2", "t2")
 #     print(read_deadline(123))
-#     delete_all_data()
+#     delete_deadline(123)
 #     print(read_deadline(123))
+#     print(read_deadline(124))
+#     delete_deadline(124)
 
 create_deadlines_table()
