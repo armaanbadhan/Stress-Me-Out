@@ -30,9 +30,12 @@ async def ping(interaction: Interaction):
 async def stressmeout(interaction: Interaction):
     embed = nextcord.Embed(title = "Reminders" , description = "Current reminders of this server" , timestamp = datetime.datetime.utcnow())
     
+    #remove the dummy data
+    dbinteract.delete_deadline(TEST_SERVER_ID)
+        
     #add a dummy deadlines
-    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", 1675904628)
-    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK2", 1675904628)
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", "2023-02-08T11:34:20.753583")
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", "2023-02-09T11:34:20.753583")
     
     #deadlines is a list of tuples
     deadlines = dbinteract.read_deadline(TEST_SERVER_ID)
