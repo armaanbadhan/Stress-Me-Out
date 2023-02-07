@@ -35,11 +35,10 @@ async def stressmeout(interaction: Interaction):
         
     #add a dummy deadlines
     dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", "2023-02-08T11:34:20.753583")
-    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK1", "2023-02-09T11:34:20.753583")
+    dbinteract.insert_deadline(TEST_SERVER_ID, "TASK2", "2023-02-09T11:34:20.753583")
     
     #deadlines is a list of tuples
     deadlines = dbinteract.read_deadline(TEST_SERVER_ID)
-    
     
     """
     send the remninder in the form as an discord embed:
@@ -62,7 +61,37 @@ async def stressmeout(interaction: Interaction):
     #send the embed
     await interaction.send(embeds=[embed])
 
+@bot.slash_command(name="add", description="add a reminder", guild_ids=[TEST_SERVER_ID])
+async def add(interaction: Interaction , reminder_name: str , date: str , month: str , year: str , hour: str , minutes: str):
 
+    #noting the current time
+    curr_time = datetime.datetime.now()
+    curr_time = datetime.datetime.strftime(curr_time , '%d%m%Y %H:%M')
+    curr_time = datetime.datetime.strptime(curr_time , '%d%m%Y %H:%M')
+
+    #20082002 12:05
+    date = date + month + year
+    deadline = date + " " + hour+ ":" + minutes 
+    
+    try:
+
+        deadline_time = datetime.datetime.strptime(deadline , "%d%m%Y %H:%M")
+
+        if(curr_time>deadline_time):
+            await interaction.response.send_message("Date has already expired!")
+        else:
+            flag = dbinteract.insert_deadline(TEST_SERVER_ID , reminder_name , deadline_time.isoformat())
+            if(flag):
+                await interaction.response.send_message("Successfully added a reminder!")
+            else:
+                await interaction.response.send_message("The name " + reminder_name + " already exists in the table! ")
+
+    
+    except ValueError as ve:
+        await interaction.response.send_message("The Time is wrong! Please try again.")
+
+    
+    
     
 
 bot.run(TOKEN)
