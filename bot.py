@@ -72,12 +72,12 @@ async def add(interaction: Interaction, reminder_name: str, date: str, month: st
     try:
         deadline_time = datetime.datetime.strptime(deadline, "%d%m%Y %H:%M")
 
-        if(curr_time > deadline_time): 
+        if curr_time > deadline_time: 
             await interaction.response.send_message("Date has already expired!")
         else:
             flag = dbinteract.insert_deadline(TEST_SERVER_ID, reminder_name, deadline_time.isoformat())
             
-            if(flag): await interaction.response.send_message("Successfully added a reminder!")
+            if flag: await interaction.response.send_message("Successfully added a reminder!")
             else: await interaction.response.send_message("The name " + reminder_name + " already exists in the table! ")
 
     except ValueError as ve:
