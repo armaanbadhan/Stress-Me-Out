@@ -33,7 +33,7 @@ def insert_deadline(guild_id, name, deadline):
     cur.execute(check_script)
     ans = cur.fetchall()
     #return if already exists
-    if(ans[0][0] != 0): return False
+    if ans[0][0] != 0: return False
 
     insert_script = "INSERT INTO deadlines (guild_id, name, deadline) VALUES (?, ?, ?)"
     cur.execute(insert_script, (guild_id, name, deadline))
@@ -62,6 +62,7 @@ def read_deadline(guild_id):
         ans[i] = list(ans[i])
         ans[i][1] = deadline_local
         ans[i] = tuple(ans[i])   
+        
 
     return ans
 
