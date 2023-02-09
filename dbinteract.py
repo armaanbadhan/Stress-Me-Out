@@ -28,6 +28,13 @@ def insert_deadline(guild_id, name, deadline):
     #add the respective timezone in seconds
     deadline += curr_timezone[0]*60
 
+    #check if name already exists or not
+    check_script = f"SELECT COUNT(*) FROM deadlines WHERE guild_id={guild_id} AND name ='{name}'"
+    cur.execute(check_script)
+    ans = cur.fetchall()
+    #return if already exists
+    if ans[0][0] != 0: return False
+
     insert_script = "INSERT INTO deadlines (guild_id, name, deadline) VALUES (?, ?, ?)"
     cur.execute(insert_script, (guild_id, name, deadline))
     conn.commit()
@@ -55,6 +62,7 @@ def read_deadline(guild_id):
         ans[i] = list(ans[i])
         ans[i][1] = deadline_local
         ans[i] = tuple(ans[i])   
+        
 
     return ans
 
