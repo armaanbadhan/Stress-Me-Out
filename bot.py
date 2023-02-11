@@ -1,12 +1,16 @@
-from config import TOKEN, TEST_SERVER_ID
-
 import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
+import os
 import datetime
 import dbinteract
 
+try:
+    from config import TOKEN, TEST_SERVER_ID
+except ImportError:
+    TOKEN = os.environ["TOKEN"]
+    TEST_SERVER_ID = os.environ["TEST_SERVER_ID"]
 
 bot = commands.Bot(intents=nextcord.Intents.all())
 
