@@ -5,6 +5,7 @@ conn = sqlite3.connect('deadlines.db')
 
 cur = conn.cursor()
 
+
 def create_deadlines_table():
     create_script = """
     CREATE TABLE IF NOT EXISTS deadlines (
@@ -18,22 +19,16 @@ def create_deadlines_table():
 
 
 def insert_deadline(guild_id, name, deadline):
-
-    #converts isoformat to timestamp
     deadline = datetime.fromisoformat(deadline).timestamp()
-
-    #retrieve timezone for this guild id
-    curr_timezone = fetch_timezone(guild_id) 
-
-    #add the respective timezone in seconds
+    curr_timezone = fetch_timezone(guild_id)
     deadline += curr_timezone[0]*60
 
-    #check if name already exists or not
     check_script = f"SELECT COUNT(*) FROM deadlines WHERE guild_id={guild_id} AND name ='{name}'"
     cur.execute(check_script)
     ans = cur.fetchall()
-    #return if already exists
-    if ans[0][0] != 0: return False
+
+    if ans[0][0] != 0: 
+        return False
 
     insert_script = "INSERT INTO deadlines (guild_id, name, deadline) VALUES (?, ?, ?)"
     cur.execute(insert_script, (guild_id, name, deadline))
@@ -50,15 +45,11 @@ def read_deadline(guild_id):
     cur.execute(fetch_script)
     ans = cur.fetchall()
 
-    #retrieve timezone for this guild id
     curr_timezone = fetch_timezone(guild_id)
 
-    #iterate over all deadlines and convert timezone
     for i in range(len(ans)):
-        #deadline_local will store isoformat like ---> 2023-02-08 11:34:20
         deadline_local = datetime.fromtimestamp((ans[i][1] - (curr_timezone[0]*60))).isoformat(" " ,"seconds")
 
-        #convert tuple to list to assign values
         ans[i] = list(ans[i])
         ans[i][1] = deadline_local
         ans[i] = tuple(ans[i])   
