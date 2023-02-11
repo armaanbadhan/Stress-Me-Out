@@ -1,11 +1,11 @@
+import os
+import datetime
+
 import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
-import os
-import datetime
 import dbinteract
-
 try:
     from config import TOKEN, TEST_SERVER_ID
 except ImportError:
@@ -18,52 +18,75 @@ bot = commands.Bot(intents=nextcord.Intents.all())
 
 @bot.event
 async def on_ready():
+    """
+    called once when bot is ready.
+    """
     print("bot ready.")
 
 
 @bot.event
 async def on_guild_join(guild):
+    """
+    Every time a bot joins a server, it create a role named `StressedOut`
+    """
     await guild.create_role(name='StressedOut')
 
 
-@bot.slash_command(name="ping", description="example slash command", guild_ids=[TEST_SERVER_ID])
-async def ping(interaction: Interaction):
-    await interaction.response.send_message("pong")
-
-
-@bot.slash_command(name="stressmeout", description="Shows The Reminders", guild_ids=[TEST_SERVER_ID])
+@bot.slash_command(
+        name="stressmeout",
+        description="Shows The Reminders",
+        guild_ids=[TEST_SERVER_ID]
+    )
 async def stressmeout(interaction: Interaction):
+    """
+    Sends an embed showing all the upcoming deadlines of that server
+    """
     embed = nextcord.Embed(
         title="Reminders",
         description="Current reminders of this server",
         timestamp=datetime.datetime.utcnow()
     )
     deadlines = dbinteract.read_deadline(TEST_SERVER_ID)
-    for idx in range(len(deadlines)):
-        embed.add_field(name= str(deadlines[idx][0]), value = str(deadlines[idx][1]), inline = False)
+    for idx in deadlines:
+        embed.add_field(name=str(idx[0]), value=str(idx[1]), inline=False)
     await interaction.send(embeds=[embed])
 
 
 @bot.slash_command(name="add", description="add a reminder", guild_ids=[TEST_SERVER_ID])
-async def add(interaction: Interaction, reminder_name: str, date: str, month: str, year: str, hour: str, minutes: str):
-    curr_time = datetime.datetime.now()
-    curr_time = datetime.datetime.strftime(curr_time, '%d%m%Y %H:%M')
+async def add(
+        interaction: Interaction,
+        reminder_name: str,
+        date: str,
+        month: str,
+        year: str,
+        hour: str,
+        minutes: str
+    ):
+    """
+    To add a deadline in a server
+    """
+    # TODO: only people with `StressedOut` role and admins should be able to call this command
 
-    date = date + month + year
-    deadline = date + " " + hour + ":" + minutes 
-    
+    deadline = date + month + year + " " + hour + ":" + minutes
+
     try:
         deadline_time = datetime.datetime.strptime(deadline, "%d%m%Y %H:%M")
 
-        if curr_time > deadline_time: 
+        if datetime.datetime.now() > deadline_time:
             await interaction.response.send_message("Date has already expired!")
+            return
         else:
-            flag = dbinteract.insert_deadline(TEST_SERVER_ID, reminder_name, deadline_time.isoformat())
-            
-            if flag: 
+            flag = dbinteract.insert_deadline(
+                    TEST_SERVER_ID,
+                    reminder_name,
+                    deadline_time.isoformat()
+                )
+
+            if flag:
                 await interaction.response.send_message("Successfully added a reminder!")
-            else: 
-                await interaction.response.send_message("The name " + reminder_name + " already exists in the table! ")
+            else:
+                await interaction.response.send_message("The name " + reminder_name + \
+                                                        " already exists in the table! ")
 
     except ValueError:
         await interaction.response.send_message("The Time format is invalid! Please try again.")
