@@ -47,8 +47,12 @@ async def stressmeout(interaction: Interaction):
         timestamp=datetime.datetime.utcnow()
     )
     deadlines = dbinteract.read_deadline(TEST_SERVER_ID)
-    for idx in deadlines:
-        embed.add_field(name=str(idx[0]), value=str(idx[1]), inline=False)
+    length = len(deadlines)
+    if length == 0 : 
+        embed.description = "Hooray! , No upcoming deadlines"       
+    else : 
+        for idx in deadlines:
+            embed.add_field(name=str(idx[0]), value=str(idx[1]), inline=False)
     await interaction.send(embeds=[embed])
 
 
