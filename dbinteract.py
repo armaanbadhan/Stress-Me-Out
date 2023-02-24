@@ -59,6 +59,8 @@ def read_deadline(guild_id):
         i[1] = deadline_local
         i = tuple(i)
 
+    ans = sort_deadlines(ans)
+    
     return ans
 
 
@@ -107,6 +109,15 @@ def create_timezonediff_table():
     """
     cur.execute(create_script)
     conn.commit()
+
+
+def sort_deadlines(ans):
+    #sort deadlines using selection sort
+    for i in range(len(ans)):
+        for j in range(i+1, len(ans)):
+            if ans[j][1] < ans[i][1]:
+                ans[i], ans[j] = ans[j], ans[i]
+    return ans
 
 
 #if __name__ == "__main__":
