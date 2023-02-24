@@ -109,6 +109,15 @@ def create_timezonediff_table():
     conn.commit()
 
 
+def sort_deadlines(ans):
+    #sort deadlines using selection sort
+    for i in range(len(ans)):
+        for j in range(i+1, len(ans)):
+            if ans[j][1] < ans[i][1]:
+                ans[i], ans[j] = ans[j], ans[i]
+    return ans
+
+
 #if __name__ == "__main__":
 #     create_deadlines_table()
 #     insert_deadline(123, "yo", "t1")
