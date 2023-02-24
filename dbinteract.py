@@ -59,6 +59,8 @@ def read_deadline(guild_id):
         i[1] = deadline_local
         i = tuple(i)
 
+    ans = sort_deadlines(ans)
+    
     return ans
 
 
