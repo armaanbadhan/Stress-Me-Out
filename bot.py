@@ -2,7 +2,7 @@ import os
 import datetime
 
 import nextcord
-from nextcord import Interaction
+from nextcord import Interaction, Permissions
 from nextcord.ext import commands
 
 import dbinteract
@@ -56,7 +56,7 @@ async def stressmeout(interaction: Interaction):
     await interaction.send(embeds=[embed])
 
 
-@bot.slash_command(name="add", description="add a reminder", guild_ids=[TEST_SERVER_ID])
+@bot.slash_command(name="add", description="add a reminder", guild_ids=[TEST_SERVER_ID], default_member_permissions=Permissions(administrator=True))
 async def add(
         interaction: Interaction,
         reminder_name: str,
